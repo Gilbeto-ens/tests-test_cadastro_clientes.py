@@ -1,0 +1,212 @@
+{
+  "v": 5,
+  "name": "Chatbot de Cobrança – API Tests",
+  "folders": [
+    {
+      "name": "Health Check",
+      "folders": [],
+      "requests": [
+        {
+          "name": "GET /health – Serviço online",
+          "method": "GET",
+          "endpoint": "http://localhost:5000/health",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 200', () => { pw.expect(pw.response.status).toBe(200); });\npw.test('Status ok', () => { pw.expect(pw.response.body.status).toBe('ok'); });",
+          "body": { "contentType": null, "body": null },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "folders": [],
+      "requests": [
+        {
+          "name": "POST /clientes – Cadastro válido (TC 1.1)",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/clientes",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 201', () => { pw.expect(pw.response.status).toBe(201); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"nome\": \"Maria Oliveira\",\n  \"telefone\": \"(11) 91234-5678\",\n  \"cpf\": \"123.456.789-09\"\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "POST /clientes – Nome vazio (deve falhar)",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/clientes",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 400', () => { pw.expect(pw.response.status).toBe(400); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"nome\": \"\",\n  \"telefone\": \"(11) 91234-5678\",\n  \"cpf\": \"123.456.789-09\"\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "POST /clientes – CPF duplicado (TC 1.2)",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/clientes",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 409', () => { pw.expect(pw.response.status).toBe(409); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"nome\": \"Clone Silva\",\n  \"telefone\": \"(11) 91234-5678\",\n  \"cpf\": \"123.456.789-09\"\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "GET /clientes – Listar todos",
+          "method": "GET",
+          "endpoint": "http://localhost:5000/clientes",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 200', () => { pw.expect(pw.response.status).toBe(200); });",
+          "body": { "contentType": null, "body": null },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "GET /clientes/:cpf – Buscar existente",
+          "method": "GET",
+          "endpoint": "http://localhost:5000/clientes/12345678909",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 200', () => { pw.expect(pw.response.status).toBe(200); });",
+          "body": { "contentType": null, "body": null },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "GET /clientes/:cpf – Não encontrado",
+          "method": "GET",
+          "endpoint": "http://localhost:5000/clientes/00000000000",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 404', () => { pw.expect(pw.response.status).toBe(404); });",
+          "body": { "contentType": null, "body": null },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        }
+      ]
+    },
+    {
+      "name": "Cobranças",
+      "folders": [],
+      "requests": [
+        {
+          "name": "POST /cobrancas – Registrar válida",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/cobrancas",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 201', () => { pw.expect(pw.response.status).toBe(201); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"cpf\": \"123.456.789-09\",\n  \"valor\": 500.00\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "GET /cobrancas/:cpf – Buscar cobrança",
+          "method": "GET",
+          "endpoint": "http://localhost:5000/cobrancas/12345678909",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 200', () => { pw.expect(pw.response.status).toBe(200); });",
+          "body": { "contentType": null, "body": null },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        }
+      ]
+    },
+    {
+      "name": "Pagamentos",
+      "folders": [],
+      "requests": [
+        {
+          "name": "POST /pagamentos – Pagamento integral (TC 3.1)",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/pagamentos",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 200', () => { pw.expect(pw.response.status).toBe(200); });\npw.test('Status quitado', () => { pw.expect(pw.response.body.cobranca.status).toBe('quitado'); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"cpf\": \"123.456.789-09\",\n  \"valor\": 500.00\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "POST /pagamentos – Valor zero (TC 3.2)",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/pagamentos",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 400', () => { pw.expect(pw.response.status).toBe(400); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"cpf\": \"123.456.789-09\",\n  \"valor\": 0\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        },
+        {
+          "name": "POST /pagamentos – Valor negativo (TC 3.2)",
+          "method": "POST",
+          "endpoint": "http://localhost:5000/pagamentos",
+          "params": [],
+          "headers": [
+            { "key": "Content-Type", "value": "application/json", "active": true }
+          ],
+          "preRequestScript": "",
+          "testScript": "pw.test('Status 400', () => { pw.expect(pw.response.status).toBe(400); });",
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n  \"cpf\": \"123.456.789-09\",\n  \"valor\": -50\n}"
+          },
+          "auth": { "authType": "none", "authActive": false },
+          "requestVariables": []
+        }
+      ]
+    }
+  ],
+  "requests": [],
+  "auth": { "authType": "none", "authActive": false },
+  "headers": []
+}
